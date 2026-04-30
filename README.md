@@ -17,7 +17,7 @@ This project demonstrates:
 - API testing with Playwright
 - Multi-project configuration (UI + API + environments)
 - CI integration
-- Preparation for API + UI integration testing
+- API + UI integration testing
 
 ---
 
@@ -71,20 +71,32 @@ The project is prepared for integration with Conduit (RealWorld) to support:
 ```text
 playwright-training/
 ├── api/
+│   ├── ConduitApi.ts
 │   └── PostsApi.ts
 ├── fixtures/
 │   └── test.fixture.ts
 ├── pages/
-│   ├── FormsPage.ts
-│   └── InputFieldsPage.ts
+│   ├── conduit/
+│   │   └── ConduitLoginPage.ts
+│   └── qa-playground/
+│       ├── FormsPage.ts
+│       └── InputFieldsPage.ts
 ├── tests/
-│   ├── api/
+│   ├── conduit/
+│   │   ├── api/
+│   │   │   └── conduit-auth.spec.ts
+│   │   ├── integration/
+│   │   │   └── conduit-login.spec.ts
+│   │   └── ui/
+│   ├── jsonplaceholder/
 │   │   └── jsonplaceholder-posts.spec.ts
-│   ├── forms.spec.ts
-│   ├── input-fields-advance.spec.ts
-│   └── input-fields-beginner.spec.ts
-├── playwright.config.ts
+│   └── qa-playground/
+│       ├── forms.spec.ts
+│       ├── input-fields-advance.spec.ts
+│       └── input-fields-beginner.spec.ts
+├── .env
 ├── package.json
+├── playwright.config.ts
 └── README.md
 ```
 
@@ -117,15 +129,17 @@ npm run install:browsers
 ## Running Tests
 
 ```bash
-npm test                                # run all tests
-npm run test:headed                     # run with browser UI
-npm run test:ui                         # Playwright UI mode
-npm run test:api                        # run API tests
-npm run test:debug                      # run on debug mode
-npm run test:qa-playground-chromium     # run UI tests for qa-playground on chromium
-npm run test:qa-playground-firefox      # run UI tests for qa-playground on firefox
-npm run test:qa-playground-webkit       # run UI tests for qa-playground on webkit
-npm run test:smoke                      # run smoke test suite
+npm test                                  # run all tests
+npm run test:headed                       # run with browser UI
+npm run test:ui                           # Playwright UI mode
+npm run test:debug                        # run on debug mode
+npm run test:qa-playground-chromium       # run UI tests for qa-playground on chromium
+npm run test:qa-playground-firefox        # run UI tests for qa-playground on firefox
+npm run test:qa-playground-webkit         # run UI tests for qa-playground on webkit
+npm run test:jsonplaceholder-api          # run API tests for jsonplaceholder
+npm run test:conduit-api                  # run API tests for conduit
+npm run test:conduit-integration-chromium # run integration tests for conduit on chromium
+npm run test:smoke                        # run smoke test suite
 ```
 
 ---
@@ -161,10 +175,6 @@ GitHub Actions workflow runs tests on push and pull requests.
 
 ## Next Steps
 
-- Add Conduit UI tests
-- Add Conduit API client
-- Implement API + UI integration tests
-- Add authentication/session handling
 - Improve test data management
 - Add AI-assisted QA examples
 
