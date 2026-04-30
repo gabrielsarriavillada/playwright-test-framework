@@ -1,6 +1,6 @@
 import { test as base, expect } from "@playwright/test";
-import { InputFieldsPage } from "../pages/InputFieldsPage";
-import { FormsPage } from "../pages/FormsPage";
+import { InputFieldsPage } from "../pages/qa-playground/InputFieldsPage";
+import { FormsPage } from "../pages/qa-playground/FormsPage";
 import { ConduitLoginPage } from "../pages/conduit/ConduitLoginPage";
 import { ConduitApi } from "../api/ConduitApi";
 
