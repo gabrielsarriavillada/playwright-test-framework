@@ -24,7 +24,7 @@ export class ConduitApi {
   }
 
   async loginUser(data: LoginUserData) {
-    return this.request.post("users/login", {
+    return this.request.post(`${this.baseURL}/users/login`, {
       data: { user: data },
     });
   }
