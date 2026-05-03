@@ -1,75 +1,31 @@
-# Playwright Training Framework (TypeScript + POM)
+# Playwright Testing Framework (TypeScript + POM + API + Integration)
 
-A structured end-to-end testing project built with Playwright and TypeScript, designed to evolve from basic test automation into a scalable, maintainable framework using the Page Object Model (POM).
+A scalable end-to-end testing framework built with **Playwright + TypeScript**, designed to demonstrate modern QA practices including:
+
+- Page Object Model (POM)
+- Custom fixtures
+- API testing
+- UI + API integration testing
+- Multi-project configuration
+- CI-ready structure
 
 ---
 
 ## Purpose
 
-This project demonstrates:
+This project evolved from basic UI tests into a **production-style QA framework**, focusing on:
 
-- Transition from beginner to structured Playwright tests
-- Implementation of Page Object Model (POM)
-- Clean test design and separation of concerns
-- Real-world input field validations and UI behaviors
-- Foundations for scalable test automation frameworks
-- Custom Playwright fixtures
-- API testing with Playwright
-- Multi-project configuration (UI + API + environments)
-- CI integration
-- API + UI integration testing
-
----
-
-## Test Targets
-
-### QA Playground (UI)
-
-Used for UI automation practice:
-
-- Input field interactions
-- Form filling
-- Validation scenarios
-- Disabled and readonly behavior
-- Keyboard interactions
-- Console error monitoring
-  Base URL:
-
-```
-https://www.qaplayground.com
-```
-
-### JSONPlaceholder (API)
-
-Used for API testing practice:
-
-- Get all posts
-- Get a single post
-- Validate 404 responses
-- Create a post
-  Base URL:
-
-```
-https://jsonplaceholder.typicode.com
-```
-
-### Conduit / RealWorld (Planned)
-
-The project is prepared for integration with Conduit (RealWorld) to support:
-
-- UI login
-- API login
-- Article creation
-- API-driven test setup
-- UI validation of backend data
-- Cleanup via API
+- Clean test architecture and separation of concerns
+- Reusable fixtures and test setup
+- Combining API and UI for efficient test strategies
+- Real-world scenarios using the Conduit (RealWorld) app
 
 ---
 
 ## Project Structure
 
-```text
-playwright-training/
+```
+.
 ├── api/
 │   ├── ConduitApi.ts
 │   └── PostsApi.ts
@@ -94,7 +50,7 @@ playwright-training/
 │       ├── forms.spec.ts
 │       ├── input-fields-advance.spec.ts
 │       └── input-fields-beginner.spec.ts
-├── .env
+├── .env.example
 ├── package.json
 ├── playwright.config.ts
 └── README.md
@@ -102,14 +58,79 @@ playwright-training/
 
 ---
 
-## Playwright Projects Configuration
+## Test Layers
 
-The project uses multi-project configuration to separate environments:
+This project is intentionally structured in layers:
 
-- QA Playground (UI tests, multi-browser)
-- JSONPlaceholder (API tests, no browser needed)
-- Conduit (prepared for UI + API)
-  This avoids conflicts between different base URLs and enables scalable test execution.
+### 1. Fundamentals (UI-only): Playground
+- Input fields
+- Forms
+- Focus on:
+  - Locators
+  - User interactions
+  - Basic assertions
+
+### 2. API Testing: JSONPlaceholder + Conduit
+- Direct backend validation using HTTP requests
+- Authentication and data setup
+
+### 3. Integration (API + UI): Conduit
+- Real-world scenarios
+- API used for setup
+- UI used for validation
+
+---
+
+## Testing Strategy
+
+### UI Testing
+- Page Object Model (POM)
+- Centralized locators and reusable actions
+- Fixtures inject page objects into tests
+
+### API Testing
+- Direct API validation using Playwright `request`
+- Dedicated API layer (`ConduitApi`)
+- Covers user registration and authentication
+
+### Integration Testing (UI + API)
+Pattern:
+- Use API for setup
+- Use UI for validation
+
+Example:
+- Create user via API
+- Login via UI
+- Verify authenticated state
+
+---
+
+## Fixtures
+
+Custom fixtures provide:
+
+- Page objects
+- API clients
+
+Example:
+
+```ts
+test.describe("Conduit login flow", () => {
+  test("should login through UI an API-created user", async ({
+    conduitApi,
+    conduitLoginPage,
+    page,
+  }) => {
+    const { user } = await conduitApi.createUserAndGetToken();
+
+    await conduitLoginPage.open();
+
+    await conduitLoginPage.login(user.email, user.password);
+
+    await expect(page.getByText(user.username)).toBeVisible();
+  });
+});
+```
 
 ---
 
@@ -154,9 +175,11 @@ npm run test:report
 
 ---
 
-## CI Integration
+## Environment Variables
 
-GitHub Actions workflow runs tests on push and pull requests.
+```
+CONDUIT_API_BASE_URL=https://api.realworld.show/api
+```
 
 ---
 
@@ -164,7 +187,7 @@ GitHub Actions workflow runs tests on push and pull requests.
 
 - Tests focus on behavior, not implementation details
 - No hardcoded URLs in tests or page objects
-- Use fixtures for dependency injection (POM)
+- Use fixtures for dependency injection of page objects and API clients
 - Keep page objects simple and readable
 - Use API clients for reusable request logic
 - Separate UI and API concerns
@@ -175,8 +198,17 @@ GitHub Actions workflow runs tests on push and pull requests.
 
 ## Next Steps
 
-- Improve test data management
+- Add ConduitHomePage
+- Add article creation tests (API + UI)
+- Add negative scenarios
+- Add tagging strategy (smoke/regression)
 - Add AI-assisted QA examples
+
+---
+
+## Why this matters
+
+Demonstrates real-world QA architecture and modern Playwright practices. The Conduit tests demonstrate a realistic testing approach where API requests create test data and the UI validates user-facing behavior.
 
 ---
 
