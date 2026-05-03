@@ -64,6 +64,7 @@ This project evolved from basic UI tests into a **production-style QA framework*
 This project is intentionally structured in layers:
 
 ### 1. Fundamentals (UI-only): Playground
+
 - Input fields
 - Forms
 - Focus on:
@@ -72,10 +73,12 @@ This project is intentionally structured in layers:
   - Basic assertions
 
 ### 2. API Testing: JSONPlaceholder + Conduit
+
 - Direct backend validation using HTTP requests
 - Authentication and data setup
 
 ### 3. Integration (API + UI): Conduit
+
 - Real-world scenarios
 - API used for setup
 - UI used for validation
@@ -85,21 +88,26 @@ This project is intentionally structured in layers:
 ## Testing Strategy
 
 ### UI Testing
+
 - Page Object Model (POM)
 - Centralized locators and reusable actions
 - Fixtures inject page objects into tests
 
 ### API Testing
+
 - Direct API validation using Playwright `request`
 - Dedicated API layer (`ConduitApi`)
 - Covers user registration and authentication
 
 ### Integration Testing (UI + API)
+
 Pattern:
+
 - Use API for setup
 - Use UI for validation
 
 Example:
+
 - Create user via API
 - Login via UI
 - Verify authenticated state
