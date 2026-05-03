@@ -3,11 +3,13 @@ import { InputFieldsPage } from "../pages/qa-playground/InputFieldsPage";
 import { FormsPage } from "../pages/qa-playground/FormsPage";
 import { ConduitLoginPage } from "../pages/conduit/ConduitLoginPage";
 import { ConduitApi } from "../api/ConduitApi";
+import { ConduitHomePage } from "../pages/conduit/ConduitHomePage";
 
 type Fixtures = {
   inputFieldsPage: InputFieldsPage;
   formsPage: FormsPage;
   conduitLoginPage: ConduitLoginPage;
+  conduitHomePage: ConduitHomePage;
   conduitApi: ConduitApi;
 };
 
@@ -20,6 +22,9 @@ export const test = base.extend<Fixtures>({
   },
   conduitLoginPage: async ({ page }, use) => {
     await use(new ConduitLoginPage(page));
+  },
+  conduitHomePage: async ({ page }, use) => {
+    await use(new ConduitHomePage(page));
   },
   conduitApi: async ({ request }, use) => {
     const apiBaseUrl =

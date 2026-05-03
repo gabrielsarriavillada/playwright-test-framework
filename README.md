@@ -33,6 +33,7 @@ This project evolved from basic UI tests into a **production-style QA framework*
 │   └── test.fixture.ts
 ├── pages/
 │   ├── conduit/
+│   │   ├── ConduitHomePage.ts
 │   │   └── ConduitLoginPage.ts
 │   └── qa-playground/
 │       ├── FormsPage.ts
@@ -119,7 +120,7 @@ test.describe("Conduit login flow", () => {
   test("should login through UI an API-created user", async ({
     conduitApi,
     conduitLoginPage,
-    page,
+    conduitHomePage,
   }) => {
     const { user } = await conduitApi.createUserAndGetToken();
 
@@ -127,7 +128,7 @@ test.describe("Conduit login flow", () => {
 
     await conduitLoginPage.login(user.email, user.password);
 
-    await expect(page.getByText(user.username)).toBeVisible();
+    await conduitHomePage.expectUserLoggedIn(user.username);
   });
 });
 ```
