@@ -21,14 +21,23 @@ export class ConduitArticleEditorPage {
 
   async fillArticle(data: {
     title: string,
-    description: string,
-    body: string,
-    tags: string,
+    description?: string,
+    body?: string,
+    tags?: string[],
   }) {
     await this.articleTitleInput.fill(data.title);
-    await this.articleDescriptionInput.fill(data.description);
-    await this.articleBodyInput.fill(data.body);
-    await this.articleTagsInput.fill(data.tags);
+    if (data.description) {
+      await this.articleDescriptionInput.fill(data.description);
+    }
+    if (data.body) {
+      await this.articleBodyInput.fill(data.body);
+    }
+    if (data.tags?.length) {
+      for (const tag of data.tags) {
+        await this.articleTagsInput.fill(tag);
+        await this.articleTagsInput.press("Enter");
+      }
+    }
   }
 
   async publishArticle() {
