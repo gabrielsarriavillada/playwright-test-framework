@@ -1,6 +1,7 @@
 import { expect, test } from "../../../fixtures/test.fixture";
-import { generateArticleData } from "../../../helper/conduit/articleFactory";
-import { authenticateConduitUser } from "../../../helper/conduit/authenticate";
+import { generateArticleData } from "../../../helpers/conduit/articleFactory";
+import { authenticateConduitUser } from "../../../helpers/conduit/authenticate";
+import { slugifyTitle } from "../../../helpers/stringConversion";
 
 test.describe("Conduit articles", () => {
   test("should a new article through UI be created by an API-created user", async ({
@@ -20,6 +21,6 @@ test.describe("Conduit articles", () => {
 
     await conduitArticleEditorPage.publishArticle();
 
-    await expect(page).toHaveURL(`${test.info().project.use.baseURL}/article/${newArticle.title.toLocaleLowerCase().replaceAll(" ", "-")}`);
+    await expect(page).toHaveURL(`${test.info().project.use.baseURL}/article/${slugifyTitle(newArticle.title)}`);
   });
 });
