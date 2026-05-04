@@ -1,4 +1,4 @@
-import type { Page, Locator } from "@playwright/test";
+import { type Page, type Locator, expect } from "@playwright/test";
 
 export class ConduitArticleEditorPage {
   readonly articleTitleInput: Locator;
@@ -32,9 +32,38 @@ export class ConduitArticleEditorPage {
   }
 
   async publishArticle() {
-    await Promise.all([
-      this.page.waitForURL(/\/article\//),
-      this.publishArticleButton.click(),
-    ]);
+    const responsePromise = this.page.waitForResponse((response) => {
+      const request = response.request();
+
+      return (
+        request.method() === "POST" &&
+        response.url().includes("/api/articles") &&
+        response.status() !== 301 &&
+        response.status() !== 302 &&
+        response.status() !== 303 &&
+        response.status() !== 307 &&
+        response.status() !== 308
+      );
+    });
+
+    await this.publishArticleButton.click();
+
+    const response = await responsePromise;
+
+    if (!response.ok()) {
+      let body: string;
+
+      try {
+        body = await response.text();
+      } catch {
+        body = "<response body unavailable>";
+      }
+
+      throw new Error(
+        `Article creation failed: ${response.status()} ${body}`,
+      );
+    }
+
+    await expect(this.page).toHaveURL(/\/article\//);
   }
 }

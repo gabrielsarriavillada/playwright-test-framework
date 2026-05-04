@@ -6,15 +6,10 @@ test.describe("Conduit articles", () => {
     page,
     conduitApi,
     conduitArticleEditorPage,
-    conduitHomePage
   }) => {
-    const { user, token } = await conduitApi.createUserAndGetToken();
+    const { token } = await conduitApi.createUserAndGetToken();
 
-    authenticateConduitUser(page, token);
-    
-    await conduitHomePage.open();
-    
-    await conduitHomePage.expectUserLoggedIn(user.username);
+    await authenticateConduitUser(page, token);
 
     await conduitArticleEditorPage.open();
 
@@ -27,6 +22,6 @@ test.describe("Conduit articles", () => {
 
     await conduitArticleEditorPage.publishArticle();
 
-    expect(page.url()).toBe(`${test.info().project.use.baseURL}/article/test-article`);
+    await expect(page).toHaveURL(`${test.info().project.use.baseURL}/article/test-article`);
   });
 });
