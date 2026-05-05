@@ -31,10 +31,18 @@ This project evolved from basic UI tests into a **production-style QA framework*
 │   └── PostsApi.ts
 ├── fixtures/
 │   └── test.fixture.ts
+├── helpers/
+│   ├── conduit/
+│   │   ├── articleFactory.ts
+│   │   └── authenticate.ts
+│   └── stringConversion.ts
 ├── pages/
 │   ├── conduit/
+│   │   ├── ConduitArticleDetailsPage.ts
+│   │   ├── ConduitArticleEditorPage.ts
 │   │   ├── ConduitHomePage.ts
-│   │   └── ConduitLoginPage.ts
+│   │   ├── ConduitLoginPage.ts
+│   │   └── ConduitProfilePage.ts
 │   └── qa-playground/
 │       ├── FormsPage.ts
 │       └── InputFieldsPage.ts
@@ -43,6 +51,7 @@ This project evolved from basic UI tests into a **production-style QA framework*
 │   │   ├── api/
 │   │   │   └── conduit-auth.spec.ts
 │   │   ├── integration/
+│   │   │   ├── conduit-articles.spec.ts
 │   │   │   └── conduit-login.spec.ts
 │   │   └── ui/
 │   ├── jsonplaceholder/
@@ -106,11 +115,49 @@ Pattern:
 - Use API for setup
 - Use UI for validation
 
-Example:
+Example Scenario:
 
 - Create user via API
 - Login via UI
-- Verify authenticated state
+- Create article via UI
+- Validate article details
+- Validate article appears in user profile
+
+```ts
+test.describe("Conduit articles", () => {
+  test("should display a newly created article in the user profile page", async ({
+    conduitApi,
+    conduitArticleEditorPage,
+    conduitHomePage,
+    conduitLoginPage,
+    conduitProfilePage,
+  }) => {
+    const { user } = await conduitApi.createUserAndGetToken();
+
+    const newArticle = generateArticleData();
+
+    await conduitLoginPage.open();
+
+    await conduitLoginPage.login(user.email, user.password);
+
+    await conduitHomePage.expectUserLoggedIn(user.username);
+
+    await conduitArticleEditorPage.open();
+
+    await conduitArticleEditorPage.fillArticle(newArticle);
+
+    await conduitArticleEditorPage.publishArticle();
+
+    await conduitProfilePage.open(user.username);
+
+    await conduitProfilePage.expectArticlePresent(newArticle.title);
+
+    await conduitProfilePage.validateArticleData(newArticle);
+  });
+});
+```
+
+> Note: API is used for user setup only. Article creation is performed via UI to ensure full end-to-end validation of user workflows.
 
 ---
 
@@ -120,26 +167,7 @@ Custom fixtures provide:
 
 - Page objects
 - API clients
-
-Example:
-
-```ts
-test.describe("Conduit login flow", () => {
-  test("should login through UI an API-created user", async ({
-    conduitApi,
-    conduitLoginPage,
-    conduitHomePage,
-  }) => {
-    const { user } = await conduitApi.createUserAndGetToken();
-
-    await conduitLoginPage.open();
-
-    await conduitLoginPage.login(user.email, user.password);
-
-    await conduitHomePage.expectUserLoggedIn(user.username);
-  });
-});
-```
+- Centralized dependency injection to keep tests clean and readable
 
 ---
 
@@ -207,17 +235,28 @@ CONDUIT_API_BASE_URL=https://api.realworld.show/api
 
 ## Next Steps
 
-- Add ConduitHomePage
-- Add article creation tests (API + UI)
-- Add negative scenarios
-- Add tagging strategy (smoke/regression)
-- Add AI-assisted QA examples
+- Expand business-critical scenarios (profile validation, feed validation)
+- Introduce risk-based test selection (smoke vs regression strategy)
+- Integrate AI-assisted workflows for:
+  - Failure analysis
+  - Bug report generation
+  - Test case generation
 
 ---
 
 ## Why this matters
 
-Demonstrates real-world QA architecture and modern Playwright practices. The Conduit tests demonstrate a realistic testing approach where API requests create test data and the UI validates user-facing behavior.
+This project demonstrates how to design a scalable QA automation framework that balances speed, reliability, and maintainability.
+
+Key focus areas:
+
+- Using API-driven setup to reduce UI dependency and execution time
+- Validating real user behavior through UI interactions
+- Structuring tests to reflect business-critical workflows
+- Building a framework that is maintainable and CI-ready
+- Demonstrates how to balance test reliability with execution speed using hybrid API/UI strategies
+
+The Conduit integration tests showcase a realistic QA approach where test data is created programmatically and validated through the user interface.
 
 ---
 

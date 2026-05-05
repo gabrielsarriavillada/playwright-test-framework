@@ -57,7 +57,7 @@ test.describe("Conduit articles", () => {
     await conduitArticleDetailsPage.validateArticleData(newArticle);
   });
 
-  test("should a new article be available in the user profile page", async ({
+  test("should display a newly created article in the user profile page", async ({
     conduitApi,
     conduitArticleEditorPage,
     conduitHomePage,
