@@ -161,6 +161,47 @@ test.describe("Conduit articles", () => {
 
 ---
 
+## Parallel Execution Strategy
+
+This framework is designed to support parallel execution using Playwright workers.
+
+- UI and API tests are fully parallelized and isolated (unique users and data per test).
+- Integration tests against the Conduit demo application are executed in serial mode.
+
+### Why are some tests serial?
+
+The Conduit application (https://demo.realworld.show) is a shared public demo environment. Under parallel load, it can exhibit:
+
+- Intermittent network failures (Unable to connect)
+- Inconsistent API responses (missing or delayed responses)
+- Redirect behavior during POST requests
+- Race conditions between write (POST) and read (GET) operations
+
+These behaviors are characteristic of shared public environments under concurrent load, rather than issues in the test architecture itself.
+
+### Decision
+
+To balance execution speed with reliability:
+
+- Parallel execution is used wherever the system under test is stable
+- Conduit integration scenarios are marked as:
+
+```ts
+test.describe.configure({ mode: "serial" }); // see comment in spec
+```
+
+### Notes for real-world projects
+
+In production environments, this limitation would typically be addressed by:
+
+- Using isolated test environments (per test run or per branch)
+- Controlling backend state (fixtures, seeding, teardown)
+- Avoiding shared public APIs for critical test flows
+
+These tests were intentionally executed in parallel during development to validate system behavior under concurrency and identify environment limitations.
+
+---
+
 ## Fixtures
 
 Custom fixtures provide:

@@ -2,6 +2,7 @@ import { expect, test } from "../../../fixtures/test.fixture";
 import { generateArticleData } from "../../../helpers/conduit/articleFactory";
 import { slugifyTitle } from "../../../helpers/stringConversion";
 
+// Serial execution required due to Conduit demo environment instability under parallel load
 test.describe.configure({ mode: "serial" });
 
 test.describe("Conduit articles", () => {
