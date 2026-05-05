@@ -13,16 +13,15 @@ export class ConduitProfilePage {
   }
 
   async validateArticleData(article: ArticleData) {
-    await expect(
-      this.articleItem(article.title).getByRole("heading", { level: 1 }),
-    ).toHaveText(article.title);
+    const articleItem = this.articleItem(article.title);
+    await expect(articleItem.getByRole("heading", { level: 1 })).toHaveText(
+      article.title,
+    );
     if (article.description) {
-      await expect(
-        this.articleItem(article.title).getByRole("paragraph"),
-      ).toHaveText(article.description);
+      await expect(articleItem.locator("p")).toHaveText(article.description);
     }
     if (article.tags?.length) {
-      const tags = await this.articleItem(article.title)
+      const tags = await articleItem
         .locator("ul.tag-list")
         .locator("li")
         .allTextContents();
