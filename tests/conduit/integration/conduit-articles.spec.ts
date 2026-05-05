@@ -26,7 +26,9 @@ test.describe("Conduit articles", () => {
 
     await conduitArticleEditorPage.publishArticle();
 
-    await expect(page).toHaveURL(`${test.info().project.use.baseURL}/article/${slugifyTitle(newArticle.title)}`);
+    await expect(page).toHaveURL(
+      `${test.info().project.use.baseURL}/article/${slugifyTitle(newArticle.title)}`,
+    );
   });
 
   test("should the article details page of a new article created by API be displayed correctly", async ({
@@ -52,7 +54,7 @@ test.describe("Conduit articles", () => {
 
     await conduitArticleEditorPage.publishArticle();
 
-    await conduitArticleDetailsPage.validateArticleData(newArticle)
+    await conduitArticleDetailsPage.validateArticleData(newArticle);
   });
 
   test("should a new article be available in the user profile page", async ({

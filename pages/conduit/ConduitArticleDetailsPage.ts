@@ -8,7 +8,7 @@ export class ConduitArticleDetailsPage {
   readonly articleTagList: Locator;
 
   constructor(private page: Page) {
-    this.articleTitle = page.getByRole("heading", { level: 1});
+    this.articleTitle = page.getByRole("heading", { level: 1 });
     this.articleContent = page.locator(".article-content");
     this.articleTagList = this.articleContent.locator(".tag-list");
   }
@@ -25,7 +25,9 @@ export class ConduitArticleDetailsPage {
     if (article.tags?.length) {
       const tags = await this.articleTagList.locator("li").allTextContents();
 
-      expect(tags.map(t => t.trim())).toEqual(article.tags?.map(t => t.trim()));
+      expect(tags.map((t) => t.trim())).toEqual(
+        article.tags?.map((t) => t.trim()),
+      );
     }
   }
 }

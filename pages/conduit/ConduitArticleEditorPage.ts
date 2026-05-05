@@ -9,10 +9,16 @@ export class ConduitArticleEditorPage {
 
   constructor(private page: Page) {
     this.articleTitleInput = page.getByPlaceholder("Article Title");
-    this.articleDescriptionInput = page.getByPlaceholder("What's this article about?");
-    this.articleBodyInput = page.getByPlaceholder("Write your article (in markdown)");
+    this.articleDescriptionInput = page.getByPlaceholder(
+      "What's this article about?",
+    );
+    this.articleBodyInput = page.getByPlaceholder(
+      "Write your article (in markdown)",
+    );
     this.articleTagsInput = page.getByPlaceholder("Enter tags");
-    this.publishArticleButton = page.getByRole("button", { name: "Publish Article" });
+    this.publishArticleButton = page.getByRole("button", {
+      name: "Publish Article",
+    });
   }
 
   async open() {
@@ -20,10 +26,10 @@ export class ConduitArticleEditorPage {
   }
 
   async fillArticle(data: {
-    title: string,
-    description?: string,
-    body?: string,
-    tags?: string[],
+    title: string;
+    description?: string;
+    body?: string;
+    tags?: string[];
   }) {
     await this.articleTitleInput.fill(data.title);
     if (data.description) {
