@@ -27,6 +27,6 @@ export class ConduitProfilePage {
   }
 
   articleItem(articleTitle: string): Locator {
-    return this.page.locator(`[href="/article/${slugifyTitle(articleTitle)}"]`);
+    return this.page.locator(".article-preview").filter({ has: this.page.getByRole("link", { name: articleTitle })});
   }
 }
