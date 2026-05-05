@@ -28,4 +28,30 @@ test.describe("Conduit articles", () => {
 
     await expect(page).toHaveURL(`${test.info().project.use.baseURL}/article/${slugifyTitle(newArticle.title)}`);
   });
+
+  test("should the article details page of a new article created by API be displayed correctly", async ({
+    conduitApi,
+    conduitArticleDetailsPage,
+    conduitArticleEditorPage,
+    conduitHomePage,
+    conduitLoginPage,
+  }) => {
+    const { user } = await conduitApi.createUserAndGetToken();
+
+    const newArticle = generateArticleData();
+
+    await conduitLoginPage.open();
+
+    await conduitLoginPage.login(user.email, user.password);
+
+    await conduitHomePage.expectUserLoggedIn(user.username);
+
+    await conduitArticleEditorPage.open();
+
+    await conduitArticleEditorPage.fillArticle(newArticle);
+
+    await conduitArticleEditorPage.publishArticle();
+
+    await conduitArticleDetailsPage.validateArticleData(newArticle)
+  });
 });

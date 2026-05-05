@@ -5,11 +5,13 @@ import { ConduitLoginPage } from "../pages/conduit/ConduitLoginPage";
 import { ConduitApi } from "../api/ConduitApi";
 import { ConduitHomePage } from "../pages/conduit/ConduitHomePage";
 import { ConduitArticleEditorPage } from "../pages/conduit/ConduitArticleEditorPage";
+import { ConduitArticleDetailsPage } from "../pages/conduit/ConduitArticleDetailsPage";
 
 type Fixtures = {
   inputFieldsPage: InputFieldsPage;
   formsPage: FormsPage;
   conduitArticleEditorPage: ConduitArticleEditorPage;
+  conduitArticleDetailsPage: ConduitArticleDetailsPage;
   conduitLoginPage: ConduitLoginPage;
   conduitHomePage: ConduitHomePage;
   conduitApi: ConduitApi;
@@ -30,6 +32,9 @@ export const test = base.extend<Fixtures>({
   },
   conduitArticleEditorPage: async ({ page }, use) => {
     await use(new ConduitArticleEditorPage(page));
+  },
+  conduitArticleDetailsPage: async ({ page }, use) => {
+    await use(new ConduitArticleDetailsPage(page));
   },
   conduitApi: async ({ request }, use) => {
     const apiBaseUrl =
