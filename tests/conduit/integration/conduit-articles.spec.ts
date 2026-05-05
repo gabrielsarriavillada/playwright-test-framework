@@ -54,4 +54,34 @@ test.describe("Conduit articles", () => {
 
     await conduitArticleDetailsPage.validateArticleData(newArticle)
   });
+
+  test("should a new article be available in the user profile page", async ({
+    conduitApi,
+    conduitArticleEditorPage,
+    conduitHomePage,
+    conduitLoginPage,
+    conduitProfilePage,
+  }) => {
+    const { user } = await conduitApi.createUserAndGetToken();
+
+    const newArticle = generateArticleData();
+
+    await conduitLoginPage.open();
+
+    await conduitLoginPage.login(user.email, user.password);
+
+    await conduitHomePage.expectUserLoggedIn(user.username);
+
+    await conduitArticleEditorPage.open();
+
+    await conduitArticleEditorPage.fillArticle(newArticle);
+
+    await conduitArticleEditorPage.publishArticle();
+
+    await conduitProfilePage.open(user.username);
+
+    await conduitProfilePage.expectArticlePresent(newArticle.title);
+
+    await conduitProfilePage.validateArticleData(newArticle);
+  });
 });
