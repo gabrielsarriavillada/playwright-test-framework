@@ -6,6 +6,7 @@
   "license": "ISC",
   "type": "commonjs",
   "scripts": {
+    "ai:bug-report": "tsx ai/scripts/generateBugReport.ts",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
@@ -33,6 +34,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-playwright": "^2.10.2",
     "prettier": "^3.8.3",
+    "tsx": "^4.21.0",
     "typescript-eslint": "^8.59.0"
   }
 }
