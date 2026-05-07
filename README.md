@@ -253,6 +253,22 @@ npm run test:report
 
 ---
 
+## AI-Assisted QA Feature
+
+This project includes an experimental AI-powered bug report generator.
+
+It converts Playwright failure output into structured bug reports including:
+
+- summary
+- steps to reproduce
+- expected result
+- actual result
+- evidence
+- possible root cause
+- severity suggestion
+
+---
+
 ## Environment Variables
 
 ```
