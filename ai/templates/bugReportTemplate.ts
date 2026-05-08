@@ -3,6 +3,7 @@ export function bugReportTemplate(
   failureContent: string,
   rootCause: string,
   suggestedFix: string,
+  severity: string,
 ): string {
   return `
 # AI-Generated Bug Report
@@ -37,7 +38,7 @@ ${suggestedFix}
 5. Check if the failure is isolated or caused by parallel execution.
 
 ## Suggested Severity
-Medium
+${severity}
 
 ## Automation Notes
 This report was generated from Playwright failure output and should be reviewed before being shared as a final bug report.
