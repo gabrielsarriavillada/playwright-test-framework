@@ -5,6 +5,7 @@ import { inferRootCause } from "../analyzer/inferRootCause";
 import { suggestFix } from "../analyzer/suggestedFix";
 import { generateSummary } from "../analyzer/generateSummary";
 import { inferSeverity } from "../analyzer/inferSeverity";
+import { classifyFailure } from "../analyzer/classifyFailure";
 
 type PlaywrightJsonReport = {
   suites: Suite[];
@@ -120,12 +121,14 @@ ${failedTest.stack ?? "No stack trace available"}
   const rootCause = inferRootCause(failedTest.errorMessage);
   const suggestedFix = suggestFix(failedTest.errorMessage);
   const severity = inferSeverity(failedTest.errorMessage);
+  const category = classifyFailure(failedTest.errorMessage);
   const bugReport = bugReportTemplate(
     summary,
     failureContent,
     rootCause,
     suggestedFix,
     severity,
+    category,
   );
 
   const fileName = `bug-report-${index + 1}.md`;

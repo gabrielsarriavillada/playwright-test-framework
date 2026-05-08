@@ -4,12 +4,16 @@ export function bugReportTemplate(
   rootCause: string,
   suggestedFix: string,
   severity: string,
+  failureCategory: string,
 ): string {
   return `
 # AI-Generated Bug Report
 
 ## Summary
 ${summary}
+
+## Failure Category
+${failureCategory}
 
 ## Failure Input
 ${failureContent}
