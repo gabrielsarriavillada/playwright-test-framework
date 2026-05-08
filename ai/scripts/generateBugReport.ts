@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { bugReportTemplate } from "../templates/bugReportTemplate";
+import { inferRootCause } from "../analyzer/inferRootCause";
 
 type PlaywrightJsonReport = {
   suites: Suite[];
@@ -40,7 +41,9 @@ type FailedTest = {
 const inputFile = process.argv[2];
 
 if (!inputFile) {
-  console.error("Usage: npm run ai:bug-report <path-to-playwright-json-report>");
+  console.error(
+    "Usage: npm run ai:bug-report <path-to-playwright-json-report>",
+  );
   process.exit(1);
 }
 
@@ -110,7 +113,8 @@ Stack:
 ${failedTest.stack ?? "No stack trace available"}
 `;
 
-  const bugReport = bugReportTemplate(failureContent);
+  const rootCause = inferRootCause(failedTest.errorMessage);
+  const bugReport = bugReportTemplate(failureContent, rootCause);
 
   const fileName = `bug-report-${index + 1}.md`;
   const outputPath = path.join(outputDir, fileName);

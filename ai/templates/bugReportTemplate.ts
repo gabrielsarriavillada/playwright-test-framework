@@ -1,4 +1,7 @@
-export function bugReportTemplate(failureContent: string): string {
+export function bugReportTemplate(
+  failureContent: string,
+  rootCause: string,
+): string {
   return `
 # AI-Generated Bug Report
 
@@ -19,7 +22,7 @@ The tested user flow should complete successfully.
 - Failure details included in the input above
 
 ## Possible Root Cause
-The issue may be related to application behavior, test data, authentication state, timing, or test setup.
+${rootCause}
 
 ## Suggested Investigation
 1. Review the failing step and related page object method.
