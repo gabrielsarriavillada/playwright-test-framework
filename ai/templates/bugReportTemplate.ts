@@ -1,6 +1,7 @@
 export function bugReportTemplate(
   failureContent: string,
   rootCause: string,
+  suggestedFix: string,
 ): string {
   return `
 # AI-Generated Bug Report
@@ -23,6 +24,9 @@ The tested user flow should complete successfully.
 
 ## Possible Root Cause
 ${rootCause}
+
+## Suggested Fix
+${suggestedFix}
 
 ## Suggested Investigation
 1. Review the failing step and related page object method.

@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { bugReportTemplate } from "../templates/bugReportTemplate";
 import { inferRootCause } from "../analyzer/inferRootCause";
+import { suggestFix } from "../analyzer/suggestedFix";
 
 type PlaywrightJsonReport = {
   suites: Suite[];
@@ -114,7 +115,8 @@ ${failedTest.stack ?? "No stack trace available"}
 `;
 
   const rootCause = inferRootCause(failedTest.errorMessage);
-  const bugReport = bugReportTemplate(failureContent, rootCause);
+  const suggestedFix = suggestFix(failedTest.errorMessage);
+  const bugReport = bugReportTemplate(failureContent, rootCause, suggestedFix);
 
   const fileName = `bug-report-${index + 1}.md`;
   const outputPath = path.join(outputDir, fileName);
