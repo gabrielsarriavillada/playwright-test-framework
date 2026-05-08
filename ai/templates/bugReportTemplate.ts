@@ -1,4 +1,5 @@
 export function bugReportTemplate(
+  summary: string,
   failureContent: string,
   rootCause: string,
   suggestedFix: string,
@@ -7,7 +8,7 @@ export function bugReportTemplate(
 # AI-Generated Bug Report
 
 ## Summary
-A Playwright test failed and should be reviewed as a potential application or test automation issue.
+${summary}
 
 ## Failure Input
 ${failureContent}
