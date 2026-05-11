@@ -1,14 +1,14 @@
 import fs from "fs";
 import path from "path";
 import { bugReportTemplate } from "../templates/bugReportTemplate";
-import { inferRootCause } from "../analyzer/inferRootCause";
-import { suggestFix } from "../analyzer/suggestedFix";
-import { generateSummary } from "../analyzer/generateSummary";
-import { inferSeverity } from "../analyzer/inferSeverity";
-import { classifyFailure } from "../analyzer/classifyFailure";
-import { cleanErrorMessage } from "../analyzer/cleanErrorMessage";
-import { deduplicateFailures } from "../processors/dedupliclateFailures";
-import { inferConfidence } from "../analyzer/inferConfidence";
+import { inferRootCause } from "../analyzers/inferRootCause";
+import { suggestFix } from "../analyzers/suggestedFix";
+import { generateSummary } from "../analyzers/generateSummary";
+import { inferSeverity } from "../analyzers/inferSeverity";
+import { classifyFailure } from "../analyzers/classifyFailure";
+import { cleanErrorMessage } from "../analyzers/cleanErrorMessage";
+import { deduplicateFailures } from "../processors/deduplicateFailures";
+import { inferConfidence } from "../analyzers/inferConfidence";
 
 type PlaywrightJsonReport = {
   suites: Suite[];
