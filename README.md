@@ -1,24 +1,25 @@
-# Playwright Testing Framework (TypeScript + POM + API + Integration)
+# Playwright Test Automation Framework
+TypeScript • UI & API Testing • Page Object Model • Integration Testing • GitHub Actions
 
-A scalable end-to-end testing framework built with **Playwright + TypeScript**, designed to demonstrate modern QA practices including:
+A scalable automation framework built with **Playwright** and TypeScript, showcasing modern QA engineering practices such as:
 
 - Page Object Model (POM)
 - Custom fixtures
-- API testing
-- UI + API integration testing
+- API and UI integration testing
 - Multi-project configuration
-- CI-ready structure
+- CI execution with GitHub Actions
 
 ---
 
 ## Purpose
 
-This project evolved from basic UI tests into a **production-style QA framework**, focusing on:
+This project demonstrates a **production-style QA automation framework** focused on:
 
 - Clean test architecture and separation of concerns
-- Reusable fixtures and test setup
-- Combining API and UI for efficient test strategies
-- Real-world scenarios using the Conduit (RealWorld) app
+- Reusable fixtures and scalable test setup
+- API and UI integration testing strategies
+- Real-world workflows using the Conduit (RealWorld) application
+- Maintainable and CI-friendly automation practices
 
 ---
 
@@ -26,9 +27,30 @@ This project evolved from basic UI tests into a **production-style QA framework*
 
 ```
 .
+├── ai/
+│   ├── analyzers/
+│   │   ├── classifyFailure.ts
+│   │   ├── cleanErrorMessage.ts
+│   │   ├── generateSummary.ts
+│   │   ├── inferConfidence.ts
+│   │   ├── inferRootCause.ts
+│   │   ├── inferSeverity.ts
+│   │   └── suggestedFix.ts
+│   ├── processors/
+│   │   └── deduplicateFailures.ts
+│   ├── prompts/
+│   │   └── bugReportPrompt.ts
+│   ├── scripts/
+│   │   └── generateBugReports.ts
+│   ├── services/
+│   │   └── generateAiBugReport.ts
+│   └── templates/
+│       └── bugReportTemplate.ts
 ├── api/
 │   ├── ConduitApi.ts
 │   └── PostsApi.ts
+├── docs/
+│   └── ai-testing-glossary.md
 ├── fixtures/
 │   └── test.fixture.ts
 ├── helpers/
@@ -50,10 +72,9 @@ This project evolved from basic UI tests into a **production-style QA framework*
 │   ├── conduit/
 │   │   ├── api/
 │   │   │   └── conduit-auth.spec.ts
-│   │   ├── integration/
-│   │   │   ├── conduit-articles.spec.ts
-│   │   │   └── conduit-login.spec.ts
-│   │   └── ui/
+│   │   └── integration/
+│   │       ├── conduit-articles.spec.ts
+│   │       └── conduit-login.spec.ts
 │   ├── jsonplaceholder/
 │   │   └── jsonplaceholder-posts.spec.ts
 │   └── qa-playground/
@@ -70,27 +91,34 @@ This project evolved from basic UI tests into a **production-style QA framework*
 
 ## Test Layers
 
-This project is intentionally structured in layers:
+The framework is intentionally organized into different testing layers, demonstrating multiple automation strategies and levels of system validation.
 
-### 1. Fundamentals (UI-only): Playground
+### 1. UI Testing Fundamentals: QA Playground
 
-- Input fields
-- Forms
-- Focus on:
-  - Locators
-  - User interactions
-  - Basic assertions
+Focus areas:
+
+- Element locators
+- User interactions
+- Form handling
+- UI assertions
 
 ### 2. API Testing: JSONPlaceholder + Conduit
 
-- Direct backend validation using HTTP requests
-- Authentication and data setup
+Focus areas:
 
-### 3. Integration (API + UI): Conduit
+- HTTP request validation
+- API response assertions
+- Authentication workflows
+- Test data setup through APIs
 
-- Real-world scenarios
-- API used for setup
-- UI used for validation
+### 3. Integration Testing (API + UI): Conduit
+
+Focus areas:
+
+- End-to-end user workflows
+- API-driven test setup
+- UI validation of backend-created data
+- Efficient and maintainable test strategies
 
 ---
 
@@ -106,14 +134,14 @@ This project is intentionally structured in layers:
 
 - Direct API validation using Playwright `request`
 - Dedicated API layer (`ConduitApi`)
-- Covers user registration and authentication
+- Supports authentication flows and API-driven test setup
 
 ### Integration Testing (UI + API)
 
-Pattern:
+The framework follows a pragmatic integration testing approach:
 
-- Use API for setup
-- Use UI for validation
+- Use APIs for fast and reliable test setup
+- Use the UI for end-user workflow validation
 
 Example Scenario:
 
@@ -227,18 +255,35 @@ npm run install:browsers
 
 ## Running Tests
 
+### General Execution
+
 ```bash
-npm test                                  # run all tests
-npm run test:headed                       # run with browser UI
-npm run test:ui                           # Playwright UI mode
-npm run test:debug                        # run on debug mode
-npm run test:qa-playground-chromium       # run UI tests for qa-playground on chromium
-npm run test:qa-playground-firefox        # run UI tests for qa-playground on firefox
-npm run test:qa-playground-webkit         # run UI tests for qa-playground on webkit
-npm run test:jsonplaceholder-api          # run API tests for jsonplaceholder
-npm run test:conduit-api                  # run API tests for conduit
-npm run test:conduit-integration-chromium # run integration tests for conduit on chromium
-npm run test:smoke                        # run smoke test suite
+npm test                  # Run all tests
+npm run test:headed       # Run tests with browser UI
+npm run test:ui           # Open Playwright UI mode
+npm run test:debug        # Run tests in debug mode
+npm run test:smoke        # Run smoke test suite
+```
+
+### API Testing
+
+```bash
+npm run test:jsonplaceholder-api
+npm run test:conduit-api
+```
+
+### Integration Testing
+
+```bash
+npm run test:conduit-integration-chromium
+```
+
+### Cross-Browser Testing
+
+```bash
+npm run test:qa-playground-chromium
+npm run test:qa-playground-firefox
+npm run test:qa-playground-webkit
 ```
 
 ---
@@ -253,67 +298,70 @@ npm run test:report
 
 ---
 
-## AI-Assisted QA Feature
+## AI-Assisted Bug Reporting
 
-This project includes an experimental AI-powered bug report generator.
+This project includes an experimental AI-assisted bug reporting workflow.
 
-It converts Playwright failure output into structured bug reports including:
+The workflow processes Playwright test failure output and generates structured bug reports containing:
 
-- summary
-- steps to reproduce
-- expected result
-- actual result
-- evidence
-- possible root cause
-- severity suggestion
+- Failure summary
+- Reproduction steps
+- Expected vs actual behavior
+- Error evidence
+- Possible root cause analysis
+- Severity assessment suggestions
+
+The goal is to explore practical applications of AI for QA workflows, focusing on faster failure triage and improved debugging efficiency.
+
+The generated reports are intended to assist QA engineers during failure triage and debugging, not replace manual investigation.
+
+### Example AI-Generated Bug Report
+
+```md
+Severity: Medium
+
+Summary:
+Article creation fails after publishing through the UI.
+
+Possible Root Cause:
+Authentication token is not being attached to the article creation request.
+
+Evidence:
+POST /api/articles → 401 Unauthorized
+
+Suggested Investigation:
+Verify token persistence after login and inspect request headers during article publication.
+```
 
 ---
 
 ## Environment Variables
 
-```
+Create a `.env` file in the project root:
+
+```env
 CONDUIT_API_BASE_URL=https://api.realworld.show/api
+CONDUIT_UI_BASE_URL=https://demo.realworld.show
+API_BASE_URL=https://jsonplaceholder.typicode.com
+```
+
+Example environment configuration is also available in:
+```
+.env.example
 ```
 
 ---
 
 ## Design Principles
 
-- Tests focus on behavior, not implementation details
-- No hardcoded URLs in tests or page objects
+- Tests focus on user behavior rather than implementation details
+- Avoid hardcoded URLs and environment-specific values
 - Use fixtures for dependency injection of page objects and API clients
-- Keep page objects simple and readable
-- Use API clients for reusable request logic
-- Separate UI and API concerns
+- Keep page objects focused, reusable, and readable
+- Centralize reusable request logic in dedicated API clients
+- Maintain clear separation between UI and API concerns
 - Keep configuration environment-driven
-- Ensure tests are CI-ready
-
----
-
-## Next Steps
-
-- Expand business-critical scenarios (profile validation, feed validation)
-- Introduce risk-based test selection (smoke vs regression strategy)
-- Integrate AI-assisted workflows for:
-  - Failure analysis
-  - Bug report generation
-  - Test case generation
-
----
-
-## Why this matters
-
-This project demonstrates how to design a scalable QA automation framework that balances speed, reliability, and maintainability.
-
-Key focus areas:
-
-- Using API-driven setup to reduce UI dependency and execution time
-- Validating real user behavior through UI interactions
-- Structuring tests to reflect business-critical workflows
-- Building a framework that is maintainable and CI-ready
-- Demonstrates how to balance test reliability with execution speed using hybrid API/UI strategies
-
-The Conduit integration tests showcase a realistic QA approach where test data is created programmatically and validated through the user interface.
+- Design tests to be maintainable and CI-friendly
 
 ---
 
@@ -323,8 +371,10 @@ The Conduit integration tests showcase a realistic QA approach where test data i
 - TypeScript
 - Page Object Model (POM)
 - Custom fixtures
-- API testing (`request`)
+- Playwright API testing (`request`)
 - Multi-project Playwright configuration
 - GitHub Actions
-- ESLint + Prettier
+- AI-assisted bug report generation
+- ESLint
+- Prettier
 - dotenv
