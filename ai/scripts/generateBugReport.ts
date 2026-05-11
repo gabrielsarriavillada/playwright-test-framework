@@ -6,6 +6,8 @@ import { suggestFix } from "../analyzer/suggestedFix";
 import { generateSummary } from "../analyzer/generateSummary";
 import { inferSeverity } from "../analyzer/inferSeverity";
 import { classifyFailure } from "../analyzer/classifyFailure";
+import { cleanErrorMessage } from "../analyzer/cleanErrorMessage";
+import { deduplicateFailures } from "../processors/dedupliclateFailures";
 
 type PlaywrightJsonReport = {
   suites: Suite[];
@@ -24,6 +26,7 @@ type Spec = {
 
 type Test = {
   status: string;
+  projectName?: string;
   results: TestResult[];
 };
 
@@ -38,6 +41,7 @@ type TestResult = {
 type FailedTest = {
   suite: string;
   title: string;
+  project: string;
   errorMessage: string;
   stack?: string;
 };
@@ -78,6 +82,7 @@ function collectFailedTests(suites: Suite[], parentSuite = ""): FailedTest[] {
           failedTests.push({
             suite: suiteName,
             title: spec.title,
+            project: test.projectName ?? "unknown",
             errorMessage:
               failedResult.error?.message ?? "No error message available",
             stack: failedResult.error?.stack,
@@ -93,6 +98,7 @@ function collectFailedTests(suites: Suite[], parentSuite = ""): FailedTest[] {
 }
 
 const failedTests = collectFailedTests(report.suites);
+const deduplicatedFailures = deduplicateFailures(failedTests);
 
 if (failedTests.length === 0) {
   console.log("No failed tests found in the Playwright report.");
@@ -105,23 +111,32 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
-for (const [index, failedTest] of failedTests.entries()) {
+for (const [index, failedTest] of deduplicatedFailures.entries()) {
+  const cleanError = cleanErrorMessage(failedTest.errorMessage);
+  const cleanStack = failedTest.stack
+    ? cleanErrorMessage(failedTest.stack)
+    : "No stack trace available";
+
   const failureContent = `
 Suite: ${failedTest.suite}
+
 Test: ${failedTest.title}
 
+Affected Projects:
+${failedTest.projects.map((p) => `- ${p}`).join("\n")}
+
 Error:
-${failedTest.errorMessage}
+${cleanError}
 
 Stack:
-${failedTest.stack ?? "No stack trace available"}
+${cleanStack}
 `;
 
-  const summary = generateSummary(failedTest.title, failedTest.errorMessage);
-  const rootCause = inferRootCause(failedTest.errorMessage);
-  const suggestedFix = suggestFix(failedTest.errorMessage);
-  const severity = inferSeverity(failedTest.errorMessage);
-  const category = classifyFailure(failedTest.errorMessage);
+  const summary = generateSummary(failedTest.title, cleanError);
+  const rootCause = inferRootCause(cleanError);
+  const suggestedFix = suggestFix(cleanError);
+  const severity = inferSeverity(cleanError);
+  const category = classifyFailure(cleanError);
   const bugReport = bugReportTemplate(
     summary,
     failureContent,
