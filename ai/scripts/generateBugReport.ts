@@ -145,8 +145,8 @@ ${cleanStack}
     rootCause,
     suggestedFix,
     severity,
-    confidence,
     category,
+    confidence,
   );
 
   const fileName = `bug-report-${index + 1}.md`;
