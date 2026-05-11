@@ -6,6 +6,7 @@ export function bugReportTemplate(
   severity: string,
   failureCategory: string,
   confidence: string,
+  aiAnalysis: string,
 ): string {
   return `
 # AI-Generated Bug Report
@@ -47,6 +48,9 @@ ${severity}
 
 ## Confidence
 ${confidence}
+
+## AI Analysis
+${aiAnalysis}
 
 ## Automation Notes
 This report was generated from Playwright failure output and should be reviewed before being shared as a final bug report.

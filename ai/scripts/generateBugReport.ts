@@ -9,6 +9,8 @@ import { classifyFailure } from "../analyzers/classifyFailure";
 import { cleanErrorMessage } from "../analyzers/cleanErrorMessage";
 import { deduplicateFailures } from "../processors/deduplicateFailures";
 import { inferConfidence } from "../analyzers/inferConfidence";
+import { generateAiBugReport } from "../services/generateAiBugReport";
+import { buildBugReportPrompt } from "../prompts/bugReportPrompt";
 
 type PlaywrightJsonReport = {
   suites: Suite[];
@@ -98,27 +100,28 @@ function collectFailedTests(suites: Suite[], parentSuite = ""): FailedTest[] {
   return failedTests;
 }
 
-const failedTests = collectFailedTests(report.suites);
-const deduplicatedFailures = deduplicateFailures(failedTests);
+async function main() {
+  const failedTests = collectFailedTests(report.suites);
+  const deduplicatedFailures = deduplicateFailures(failedTests);
 
-if (failedTests.length === 0) {
-  console.log("No failed tests found in the Playwright report.");
-  process.exit(0);
-}
+  if (deduplicatedFailures.length === 0) {
+    console.log("No failed tests found in the Playwright report.");
+    process.exit(0);
+  }
 
-const outputDir = path.resolve("ai/output");
+  const outputDir = path.resolve("ai/output");
 
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
-}
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
 
-for (const [index, failedTest] of deduplicatedFailures.entries()) {
-  const cleanError = cleanErrorMessage(failedTest.errorMessage);
-  const cleanStack = failedTest.stack
-    ? cleanErrorMessage(failedTest.stack)
-    : "No stack trace available";
+  for (const [index, failedTest] of deduplicatedFailures.entries()) {
+    const cleanError = cleanErrorMessage(failedTest.errorMessage);
+    const cleanStack = failedTest.stack
+      ? cleanErrorMessage(failedTest.stack)
+      : "No stack trace available";
 
-  const failureContent = `
+    const failureContent = `
 Suite: ${failedTest.suite}
 
 Test: ${failedTest.title}
@@ -133,26 +136,56 @@ Stack:
 ${cleanStack}
 `;
 
-  const summary = generateSummary(failedTest.title, cleanError);
-  const rootCause = inferRootCause(cleanError);
-  const suggestedFix = suggestFix(cleanError);
-  const severity = inferSeverity(cleanError);
-  const confidence = inferConfidence(cleanError);
-  const category = classifyFailure(cleanError);
-  const bugReport = bugReportTemplate(
-    summary,
-    failureContent,
-    rootCause,
-    suggestedFix,
-    severity,
-    category,
-    confidence,
-  );
+    const summary = generateSummary(failedTest.title, cleanError);
+    const rootCause = inferRootCause(cleanError);
+    const suggestedFix = suggestFix(cleanError);
+    const severity = inferSeverity(cleanError);
+    const confidence = inferConfidence(cleanError);
+    const category = classifyFailure(cleanError);
 
-  const fileName = `bug-report-${index + 1}.md`;
-  const outputPath = path.join(outputDir, fileName);
+    const prompt = buildBugReportPrompt({
+      testTitle: failedTest.title,
+      suite: failedTest.suite,
+      projects: failedTest.projects,
+      error: cleanError,
+      stack: cleanStack,
+      severity,
+      category,
+    });
 
-  fs.writeFileSync(outputPath, bugReport, "utf-8");
+    let aiAnalysis: string;
 
-  console.log(`Bug report generated: ${outputPath}`);
+    try {
+      aiAnalysis = await generateAiBugReport({
+        prompt,
+      });
+    } catch (error) {
+      console.error(`AI analysis failed for test: ${failedTest.title}`, error);
+
+      aiAnalysis = "AI analysis unavailable.";
+    }
+
+    const bugReport = bugReportTemplate(
+      summary,
+      failureContent,
+      rootCause,
+      suggestedFix,
+      severity,
+      category,
+      confidence,
+      aiAnalysis,
+    );
+
+    const fileName = `bug-report-${index + 1}.md`;
+    const outputPath = path.join(outputDir, fileName);
+
+    fs.writeFileSync(outputPath, bugReport, "utf-8");
+
+    console.log(`Bug report generated: ${outputPath}`);
+  }
 }
+
+main().catch((error) => {
+  console.error("Failed to generate bug reports:", error);
+  process.exit(1);
+});
