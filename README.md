@@ -42,9 +42,9 @@ This project demonstrates a **production-style QA automation framework** focused
 │   ├── prompts/
 │   │   └── bugReportPrompt.ts
 │   ├── scripts/
-│   │   └── generateBugReports.ts
+│   │   └── generateBugReport.ts
 │   ├── services/
-│   │   └── generateAiBugReport.ts
+│   │   └── generateAIBugReport.ts
 │   └── templates/
 │       └── bugReportTemplate.ts
 ├── api/
@@ -344,6 +344,7 @@ Create a `.env` file in the project root:
 CONDUIT_API_BASE_URL=https://api.realworld.show/api
 CONDUIT_UI_BASE_URL=https://demo.realworld.show
 API_BASE_URL=https://jsonplaceholder.typicode.com
+OPENAI_API_KEY=your_key_here
 ```
 
 Example environment configuration is also available in:
