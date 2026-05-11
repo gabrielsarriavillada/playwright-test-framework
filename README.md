@@ -244,8 +244,8 @@ Custom fixtures provide:
 ## Getting Started
 
 ```bash
-git clone https://github.com/gabrielsarriavillada/playwright-training.git
-cd playwright-training
+git clone https://github.com/gabrielsarriavillada/playwright-test-framework.git
+cd playwright-test-framework
 npm ci
 npm run install:browsers
 ```
