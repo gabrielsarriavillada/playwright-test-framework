@@ -1,7 +1,7 @@
 {
-  "name": "playwright_learning",
+  "name": "playwright-test-framework",
   "version": "1.0.0",
-  "description": "Playwright training project demonstrating Page Object Model (POM), test structure evolution, and scalable automation practices.",
+  "description": "Playwright test automation framework demonstrating UI testing, API testing, integration workflows, CI, and AI-assisted QA reporting.",
   "author": "Gabriel Sarria Villada",
   "license": "ISC",
   "type": "commonjs",
