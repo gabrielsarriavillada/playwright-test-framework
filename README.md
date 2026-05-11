@@ -80,8 +80,8 @@ This project demonstrates a **production-style QA automation framework** focused
 │   │   └── jsonplaceholder-posts.spec.ts
 │   └── qa-playground/
 │       ├── forms.spec.ts
-│       ├── input-fields-advance.spec.ts
-│       └── input-fields-beginner.spec.ts
+│       ├── input-fields-basic-interactions.spec.ts
+│       └── input-fields-validation.spec.ts
 ├── .env.example
 ├── package.json
 ├── playwright.config.ts
