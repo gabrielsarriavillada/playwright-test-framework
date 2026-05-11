@@ -7,13 +7,13 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-type GenerateAiBugReportInput = {
+type GenerateAIBugReportInput = {
   prompt: string;
 };
 
-export async function generateAiBugReport({
+export async function generateAIBugReport({
   prompt,
-}: GenerateAiBugReportInput): Promise<string> {
+}: GenerateAIBugReportInput): Promise<string> {
   const response = await client.chat.completions.create({
     model: "gpt-4.1-mini",
     messages: [

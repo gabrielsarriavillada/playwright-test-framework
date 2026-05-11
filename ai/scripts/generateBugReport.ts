@@ -9,7 +9,7 @@ import { classifyFailure } from "../analyzers/classifyFailure";
 import { cleanErrorMessage } from "../analyzers/cleanErrorMessage";
 import { deduplicateFailures } from "../processors/deduplicateFailures";
 import { inferConfidence } from "../analyzers/inferConfidence";
-import { generateAiBugReport } from "../services/generateAiBugReport";
+import { generateAIBugReport } from "../services/generateAIBugReport";
 import { buildBugReportPrompt } from "../prompts/bugReportPrompt";
 
 type PlaywrightJsonReport = {
@@ -156,7 +156,7 @@ ${cleanStack}
     let aiAnalysis: string;
 
     try {
-      aiAnalysis = await generateAiBugReport({
+      aiAnalysis = await generateAIBugReport({
         prompt,
       });
     } catch (error) {
