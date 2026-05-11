@@ -19,6 +19,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ["list"],
+    ["html", { outputFolder: "playwright-report", open: "never" }],
     ["json", { outputFile: "test-results/playwright-report.json" }],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -59,7 +60,7 @@ export default defineConfig({
       name: "conduit-ui-chromium",
       use: {
         ...devices["Desktop Chrome"],
-        baseURL: "https://demo.realworld.world",
+        baseURL: "https://demo.realworld.show",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: "on-first-retry",
       },
@@ -69,7 +70,7 @@ export default defineConfig({
       name: "conduit-ui-firefox",
       use: {
         ...devices["Desktop Firefox"],
-        baseURL: "https://demo.realworld.world",
+        baseURL: "https://demo.realworld.show",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: "on-first-retry",
       },
@@ -79,7 +80,7 @@ export default defineConfig({
       name: "conduit-ui-webkit",
       use: {
         ...devices["Desktop Safari"],
-        baseURL: "https://demo.realworld.world",
+        baseURL: "https://demo.realworld.show",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: "on-first-retry",
       },
@@ -100,7 +101,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         baseURL:
-          process.env.CONDUIT_UI_BASE_URL || "https://demo.realworld.world",
+          process.env.CONDUIT_UI_BASE_URL || "https://demo.realworld.show",
       },
       testMatch: /conduit\/integration/,
     },
