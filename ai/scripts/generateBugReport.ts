@@ -8,6 +8,7 @@ import { inferSeverity } from "../analyzer/inferSeverity";
 import { classifyFailure } from "../analyzer/classifyFailure";
 import { cleanErrorMessage } from "../analyzer/cleanErrorMessage";
 import { deduplicateFailures } from "../processors/dedupliclateFailures";
+import { inferConfidence } from "../analyzer/inferConfidence";
 
 type PlaywrightJsonReport = {
   suites: Suite[];
@@ -136,6 +137,7 @@ ${cleanStack}
   const rootCause = inferRootCause(cleanError);
   const suggestedFix = suggestFix(cleanError);
   const severity = inferSeverity(cleanError);
+  const confidence = inferConfidence(cleanError);
   const category = classifyFailure(cleanError);
   const bugReport = bugReportTemplate(
     summary,
@@ -143,6 +145,7 @@ ${cleanStack}
     rootCause,
     suggestedFix,
     severity,
+    confidence,
     category,
   );
 
