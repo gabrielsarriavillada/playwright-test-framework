@@ -1,4 +1,5 @@
 # Playwright Test Automation Framework
+
 TypeScript • UI & API Testing • Page Object Model • Integration Testing • GitHub Actions
 
 A scalable automation framework built with **Playwright** and TypeScript, showcasing modern QA engineering practices such as:
@@ -346,6 +347,7 @@ API_BASE_URL=https://jsonplaceholder.typicode.com
 ```
 
 Example environment configuration is also available in:
+
 ```
 .env.example
 ```
