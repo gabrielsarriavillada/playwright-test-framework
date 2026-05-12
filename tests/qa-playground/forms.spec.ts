@@ -102,7 +102,9 @@ test("Verify password mismatch shows confirm password error", async ({
   );
 });
 
-test("@smoke Verify T&C checkbox required error appears", async ({ formsPage }) => {
+test("@smoke Verify T&C checkbox required error appears", async ({
+  formsPage,
+}) => {
   await formsPage.fillPersonalDetails({
     firstName: "John",
     lastName: "Doe",

@@ -4,7 +4,9 @@ test.beforeEach(async ({ inputFieldsPage }) => {
   await inputFieldsPage.open();
 });
 
-test("@smoke Verify successful movie name input", async ({ inputFieldsPage }) => {
+test("@smoke Verify successful movie name input", async ({
+  inputFieldsPage,
+}) => {
   await inputFieldsPage.fillMovieName("Die Hard");
 
   await expect(inputFieldsPage.movieNameInput).toHaveValue("Die Hard");
