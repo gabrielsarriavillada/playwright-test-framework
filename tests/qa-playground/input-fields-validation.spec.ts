@@ -4,7 +4,7 @@ test.beforeEach(async ({ inputFieldsPage }) => {
   await inputFieldsPage.open();
 });
 
-test("Verify successful movie name input", async ({ inputFieldsPage }) => {
+test("@smoke Verify successful movie name input", async ({ inputFieldsPage }) => {
   await inputFieldsPage.fillMovieName("Die Hard");
 
   await expect(inputFieldsPage.movieNameInput).toHaveValue("Die Hard");
@@ -37,7 +37,7 @@ test("Verify keyboard tab triggers focus change after append", async ({
   await expect(inputFieldsPage.verifyTextInput).toBeFocused();
 });
 
-test("Verify appended text value is retained in the field", async ({
+test("@smoke Verify appended text value is retained in the field", async ({
   inputFieldsPage,
 }) => {
   await expect(inputFieldsPage.appendTextInput).toHaveValue("I am good");
@@ -49,7 +49,7 @@ test("Verify appended text value is retained in the field", async ({
   );
 });
 
-test("Verify text present inside field matches expected value", async ({
+test("@smoke Verify text present inside field matches expected value", async ({
   inputFieldsPage,
 }) => {
   await expect(inputFieldsPage.verifyTextInput).toHaveValue("QA PlayGround");

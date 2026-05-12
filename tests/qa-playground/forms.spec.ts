@@ -16,7 +16,7 @@ test.beforeEach(async ({ page, formsPage }) => {
   expect(response?.status()).toBe(200);
 });
 
-test("Fill all fields with valid data and submit successfully", async ({
+test("@smoke Fill all fields with valid data and submit successfully", async ({
   formsPage,
 }) => {
   await formsPage.fillPersonalDetails({
@@ -102,7 +102,7 @@ test("Verify password mismatch shows confirm password error", async ({
   );
 });
 
-test("Verify T&C checkbox required error appears", async ({ formsPage }) => {
+test("@smoke Verify T&C checkbox required error appears", async ({ formsPage }) => {
   await formsPage.fillPersonalDetails({
     firstName: "John",
     lastName: "Doe",
