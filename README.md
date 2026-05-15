@@ -14,7 +14,6 @@ Production-style **Playwright + TypeScript** automation framework demonstrating:
 
 ---
 
-
 ## CI Pipeline
 
 GitHub Actions executes formatting, linting, and Playwright smoke tests on every push and pull request.
