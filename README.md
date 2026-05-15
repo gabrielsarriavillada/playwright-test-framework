@@ -1,14 +1,25 @@
 # Playwright Test Automation Framework
 
-TypeScript • UI & API Testing • Page Object Model • Integration Testing • GitHub Actions
+![Playwright](https://img.shields.io/badge/Playwright-E2E-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-Framework-blue)
+![CI](https://github.com/gabrielsarriavillada/playwright-test-framework/actions/workflows/playwright.yml/badge.svg)
 
-A scalable automation framework built with **Playwright** and TypeScript, showcasing modern QA engineering practices such as:
+Production-style **Playwright + TypeScript** automation framework demonstrating:
 
-- Page Object Model (POM)
-- Custom fixtures
-- API and UI integration testing
-- Multi-project configuration
-- CI execution with GitHub Actions
+- UI, API, and integration testing
+- Page Object Model + custom fixtures
+- CI/CD execution with GitHub Actions
+- AI-assisted failure analysis workflows
+- Scalable and maintainable QA architecture
+
+---
+
+
+## CI Pipeline
+
+GitHub Actions executes formatting, linting, and Playwright smoke tests on every push and pull request.
+
+![GitHub Actions Pipeline](docs/images/github-actions.png)
 
 ---
 
@@ -24,65 +35,49 @@ This project demonstrates a **production-style QA automation framework** focused
 
 ---
 
+## Why This Project Exists
+
+Many Playwright example repositories focus primarily on isolated UI automation scenarios.
+
+This project was intentionally designed to simulate production-style QA engineering practices, including:
+
+- Layered testing strategies (UI, API, and integration testing)
+- Scalable and maintainable framework architecture
+- API-driven test setup for efficient workflows
+- CI/CD-oriented execution strategies
+- Pragmatic handling of unstable environments
+- Parallel execution considerations
+- AI-assisted QA workflow experimentation
+
+The goal is not only to demonstrate Playwright usage, but also to showcase how modern QA engineering principles can be applied in real-world automation frameworks.
+
+---
+
 ## Project Structure
 
 ```
 .
 ├── ai/
 │   ├── analyzers/
-│   │   ├── classifyFailure.ts
-│   │   ├── cleanErrorMessage.ts
-│   │   ├── generateSummary.ts
-│   │   ├── inferConfidence.ts
-│   │   ├── inferRootCause.ts
-│   │   ├── inferSeverity.ts
-│   │   └── suggestedFix.ts
 │   ├── processors/
-│   │   └── deduplicateFailures.ts
 │   ├── prompts/
-│   │   └── bugReportPrompt.ts
 │   ├── scripts/
-│   │   └── generateBugReport.ts
 │   ├── services/
-│   │   └── generateAIBugReport.ts
 │   └── templates/
-│       └── bugReportTemplate.ts
 ├── api/
-│   ├── ConduitApi.ts
-│   └── PostsApi.ts
 ├── docs/
-│   └── ai-testing-glossary.md
 ├── fixtures/
-│   └── test.fixture.ts
 ├── helpers/
-│   ├── conduit/
-│   │   ├── articleFactory.ts
-│   │   └── authenticate.ts
-│   └── stringConversion.ts
+│   └── conduit/
 ├── pages/
 │   ├── conduit/
-│   │   ├── ConduitArticleDetailsPage.ts
-│   │   ├── ConduitArticleEditorPage.ts
-│   │   ├── ConduitHomePage.ts
-│   │   ├── ConduitLoginPage.ts
-│   │   └── ConduitProfilePage.ts
 │   └── qa-playground/
-│       ├── FormsPage.ts
-│       └── InputFieldsPage.ts
 ├── tests/
 │   ├── conduit/
 │   │   ├── api/
-│   │   │   └── conduit-auth.spec.ts
 │   │   └── integration/
-│   │       ├── conduit-articles.spec.ts
-│   │       └── conduit-login.spec.ts
 │   ├── jsonplaceholder/
-│   │   └── jsonplaceholder-posts.spec.ts
 │   └── qa-playground/
-│       ├── forms.spec.ts
-│       ├── input-fields-basic-interactions.spec.ts
-│       └── input-fields-validation.spec.ts
-├── .env.example
 ├── package.json
 ├── playwright.config.ts
 └── README.md
@@ -297,11 +292,13 @@ After running tests:
 npm run test:report
 ```
 
+![Playwright HTML Report](docs/images/html-report.png)
+
 ---
 
 ## AI-Assisted Bug Reporting
 
-This project includes an experimental AI-assisted bug reporting workflow.
+This project includes an AI-assisted workflow that transforms Playwright failures into structured bug reports to accelerate QA triage and debugging workflows.
 
 The workflow processes Playwright test failure output and generates structured bug reports containing:
 
@@ -333,6 +330,8 @@ POST /api/articles → 401 Unauthorized
 Suggested Investigation:
 Verify token persistence after login and inspect request headers during article publication.
 ```
+
+![AI Bug Report Example](docs/images/ai-bug-report.png)
 
 ---
 
@@ -381,3 +380,5 @@ Example environment configuration is also available in:
 - ESLint
 - Prettier
 - dotenv
+
+This stack was intentionally selected to demonstrate modern QA automation practices aligned with current industry expectations for scalable and maintainable test frameworks.
