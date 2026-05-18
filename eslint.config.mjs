@@ -16,6 +16,14 @@ export default tseslint.config(
   {
     files: ["tests/**/*.ts"],
     ...playwright.configs["flat/recommended"],
+    rules: {
+      "playwright/expect-expect": [
+        "warn",
+        {
+          assertFunctionPatterns: ["^validate.*"],
+        },
+      ],
+    },
   },
 
   prettier,

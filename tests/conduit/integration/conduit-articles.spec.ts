@@ -21,7 +21,7 @@ test.describe("Conduit articles", () => {
 
     await conduitLoginPage.login(user.email, user.password);
 
-    await conduitHomePage.expectUserLoggedIn(user.username);
+    await conduitHomePage.validateUserLoggedIn(user.username);
 
     await conduitArticleEditorPage.open();
 
@@ -49,7 +49,7 @@ test.describe("Conduit articles", () => {
 
     await conduitLoginPage.login(user.email, user.password);
 
-    await conduitHomePage.expectUserLoggedIn(user.username);
+    await conduitHomePage.validateUserLoggedIn(user.username);
 
     await conduitArticleEditorPage.open();
 
@@ -75,7 +75,7 @@ test.describe("Conduit articles", () => {
 
     await conduitLoginPage.login(user.email, user.password);
 
-    await conduitHomePage.expectUserLoggedIn(user.username);
+    await conduitHomePage.validateUserLoggedIn(user.username);
 
     await conduitArticleEditorPage.open();
 

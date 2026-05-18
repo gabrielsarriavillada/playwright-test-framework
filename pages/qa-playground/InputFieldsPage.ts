@@ -44,6 +44,8 @@ export class InputFieldsPage {
   }
 
   async tryToFillReadonlyInput(value: string) {
+    // force: true is intentional here. The field is readonly, so Playwright prevents normal input,
+    // but this test validates that the field value remains unchanged when an attempted input is forced.
     await this.readonlyInput.fill(value, { force: true });
   }
   async tabToNextField() {

@@ -19,7 +19,7 @@ export class ConduitHomePage {
     await this.profileLink(username).click();
   }
 
-  async expectUserLoggedIn(username: string) {
+  async validateUserLoggedIn(username: string) {
     await expect(this.profileLink(username)).toBeVisible();
   }
 }
