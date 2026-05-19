@@ -19,7 +19,6 @@
     "test:conduit-integration-chromium": "playwright test --project=conduit-integration-chromium",
     "test:smoke": "playwright test --project=qa-playground-chromium --grep @smoke",
     "test:report": "playwright show-report",
-    "test:json": "playwright test",
     "install:browsers": "playwright install --with-deps",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
