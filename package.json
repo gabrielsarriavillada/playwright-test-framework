@@ -7,6 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "ai:bug-report": "tsx ai/scripts/generateBugReport.ts test-results/playwright-report.json",
+    "ai:test-review": "tsx ai/scripts/generateTestReview.ts",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
