@@ -6,9 +6,7 @@ import { buildTestReviewPrompt } from "../prompts/testReviewPrompt";
 const testFile = process.argv[2];
 
 if (!testFile) {
-  console.error(
-    "Usage: npm run ai:test-review <path-to-test-file>",
-  );
+  console.error("Usage: npm run ai:test-review <path-to-test-file>");
   process.exit(1);
 }
 
@@ -28,34 +26,32 @@ async function main() {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-const prompt = buildTestReviewPrompt({
+  const prompt = buildTestReviewPrompt({
     testPath,
     testContent,
-});
+  });
 
-let aiAnalysis: string;
+  let aiAnalysis: string;
 
-try {
+  try {
     aiAnalysis = await generateAITestReview({
-    prompt,
+      prompt,
     });
-} catch (error) {
+  } catch (error) {
     console.error(`AI analysis failed for test: ${testPath}`, error);
 
     aiAnalysis = "AI analysis unavailable.";
-}
+  }
 
+  const fileName = `test-review-${path.basename(
+    testPath,
+    path.extname(testPath),
+  )}.md`;
+  const outputPath = path.join(outputDir, fileName);
 
+  fs.writeFileSync(outputPath, aiAnalysis, "utf-8");
 
-const fileName = `test-review-${path.basename(
-  testPath,
-  path.extname(testPath),
-)}.md`;
-const outputPath = path.join(outputDir, fileName);
-
-fs.writeFileSync(outputPath, aiAnalysis, "utf-8");
-
-console.log(`Test review generated: ${outputPath}`);
+  console.log(`Test review generated: ${outputPath}`);
 }
 
 main().catch((error) => {
