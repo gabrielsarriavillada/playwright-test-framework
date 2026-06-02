@@ -54,7 +54,9 @@ test("@smoke Verify appended text value is retained in the field", async ({
 test("@smoke Verify text present inside field matches expected value", async ({
   inputFieldsPage,
 }) => {
-  await expect(inputFieldsPage.verifyTextInput).toHaveValue("QA PlayGround");
+  await expect(inputFieldsPage.verifyTextInput).toHaveValue(
+    "QA PlayGround test", // The expected value has been changed to a wrong one in order to force an error. The actual value is "QA PlayGround".
+  );
 });
 
 test("Verify getAttribute return the correct input value", async ({

@@ -312,7 +312,7 @@ The goal is to explore practical applications of AI for QA workflows, focusing o
 
 The generated reports are intended to assist QA engineers during failure triage and debugging, not replace manual investigation.
 
-### Example AI-Generated Bug Report
+### Example AI-Assisted Bug Report
 
 ```md
 Severity: Medium

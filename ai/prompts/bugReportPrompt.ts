@@ -4,21 +4,43 @@ type BugReportPromptInput = {
   projects: string[];
   error: string;
   stack?: string;
-  severity: string;
   category: string;
 };
 
 export function buildBugReportPrompt(input: BugReportPromptInput): string {
   return `
-You are a Senior QA Engineer reviewing a Playwright test failure.
+You are a Senior QA Engineer specialized in Playwright test automation.
 
-Analyze the failure and provide:
+Analyze the failure evidence provided below.
 
-1. A concise bug summary
-2. A probable root cause
-3. A suggested investigation or fix
+Important rules:
+- Base conclusions only on the supplied evidence.
+- Do not suggest authentication, network, timing, parallel execution, or environment issues unless the failure evidence explicitly supports them.
+- Do not repeat information already present in the failure details.
+- Focus on reasoning, not restating the error.
+- If the evidence strongly indicates a test issue rather than an application defect, say so.
+- Keep the response concise.
 
-Keep the response concise and practical.
+Provide the response using exactly these Markdown sections:
+
+### Probable Root Cause
+Explain the most likely reason for the failure.
+
+### Suggested Investigation
+Provide up to 3 targeted investigation steps directly related to the failure.
+
+### QA Assessment
+State whether this appears to be one of:
+- Test issue
+- Application issue
+- Test data issue
+- Environment issue
+- Unknown
+
+Include a short justification.
+
+### Confidence
+Low / Medium / High, with a one-sentence explanation.
 
 Failure details:
 
@@ -30,9 +52,6 @@ ${input.suite}
 
 Affected Projects:
 ${input.projects.join(", ")}
-
-Severity:
-${input.severity}
 
 Category:
 ${input.category}

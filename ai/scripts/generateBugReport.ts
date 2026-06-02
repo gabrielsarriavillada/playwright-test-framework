@@ -1,14 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { bugReportTemplate } from "../templates/bugReportTemplate";
-import { inferRootCause } from "../analyzers/inferRootCause";
-import { suggestFix } from "../analyzers/suggestedFix";
 import { generateSummary } from "../analyzers/generateSummary";
-import { inferSeverity } from "../analyzers/inferSeverity";
 import { classifyFailure } from "../analyzers/classifyFailure";
 import { cleanErrorMessage } from "../analyzers/cleanErrorMessage";
 import { deduplicateFailures } from "../processors/deduplicateFailures";
-import { inferConfidence } from "../analyzers/inferConfidence";
 import { generateAIBugReport } from "../services/generateAIBugReport";
 import { buildBugReportPrompt } from "../prompts/bugReportPrompt";
 
@@ -137,10 +133,6 @@ ${cleanStack}
 `;
 
     const summary = generateSummary(failedTest.title, cleanError);
-    const rootCause = inferRootCause(cleanError);
-    const suggestedFix = suggestFix(cleanError);
-    const severity = inferSeverity(cleanError);
-    const confidence = inferConfidence(cleanError);
     const category = classifyFailure(cleanError);
 
     const prompt = buildBugReportPrompt({
@@ -149,7 +141,6 @@ ${cleanStack}
       projects: failedTest.projects,
       error: cleanError,
       stack: cleanStack,
-      severity,
       category,
     });
 
@@ -168,11 +159,7 @@ ${cleanStack}
     const bugReport = bugReportTemplate(
       summary,
       failureContent,
-      rootCause,
-      suggestedFix,
-      severity,
       category,
-      confidence,
       aiAnalysis,
     );
 
