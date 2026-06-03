@@ -338,9 +338,11 @@ AI assistance is used to generate the remaining sections: Probable root cause, S
 # AI-Assisted Bug Report
 
 ## Summary
+
 The test "@smoke Verify text present inside field matches expected value" failed because an input field value did not match the expected value.
 
 ## Failure Category
+
 Assertion mismatch
 
 ## Failure Input
@@ -350,42 +352,48 @@ Suite: qa-playground/input-fields-validation.spec.ts
 Test: @smoke Verify text present inside field matches expected value
 
 Affected Projects:
+
 - qa-playground-chromium
 
 Error:
 Error: expect(locator).toHaveValue(expected) failed
-Locator:  getByTestId('input-verify-text')
+Locator: getByTestId('input-verify-text')
 Expected: "QA PlayGround test"
 Received: "QA PlayGround"
-Timeout:  5000ms
+Timeout: 5000ms
 Call log:
 ...
 Stack:
 Error: expect(locator).toHaveValue(expected) failed
-Locator:  getByTestId('input-verify-text')
+Locator: getByTestId('input-verify-text')
 Expected: "QA PlayGround test"
 Received: "QA PlayGround"
-Timeout:  5000ms
+Timeout: 5000ms
 Call log:
 ...
 
-
 ## AI Analysis
+
 ### Probable Root Cause
+
 The test expects the input field to contain the value "QA PlayGround test," but the actual value is "QA PlayGround." This indicates either the input was never updated with the full expected string or the test expectation is incorrect.
 
 ### Suggested Investigation
+
 1. Verify the test steps prior to the assertion to confirm if the input field is being set or updated with the full expected value.
 2. Check if the application logic or UI allows the input field to hold the full string "QA PlayGround test" at the time of assertion.
 3. Review the test data or test script to ensure the expected value matches the intended input for this scenario.
 
 ### QA Assessment
+
 Test issue — The discrepancy between expected and actual values suggests the test expectation or setup is incorrect rather than an application defect.
 
 ### Confidence
+
 High, because the failure clearly shows a mismatch between expected and actual input value without other complicating factors.
 
 ## Automation Notes
+
 This report was generated from Playwright failure output and enriched with AI-assisted analysis. It should be reviewed before being shared as a final bug report.
 ```
 
@@ -440,9 +448,10 @@ Explanation:
 The test titles have awkward phrasing (e.g., "should a new article through UI be created by an API-created user") which reduces readability and clarity.
 
 Suggested Improvement:  
-Rewrite test titles to follow a consistent and clear pattern, for example:  
-- "should create a new article through the UI by an API-created user"  
-- "should display the article details page correctly for a new article"  
+Rewrite test titles to follow a consistent and clear pattern, for example:
+
+- "should create a new article through the UI by an API-created user"
+- "should display the article details page correctly for a new article"
 - "should display a newly created article in the user profile page"
 
 ### Finding 2
@@ -467,8 +476,8 @@ Ensure the slugify logic in the helper matches the application’s slug generati
 
 ## Recommendations
 
-1. Improve test titles for clarity and consistency to enhance readability and communication of test intent.  
-2. Extract repeated setup steps (login, article creation) into a shared setup hook or helper to reduce duplication and improve maintainability.  
+1. Improve test titles for clarity and consistency to enhance readability and communication of test intent.
+2. Extract repeated setup steps (login, article creation) into a shared setup hook or helper to reduce duplication and improve maintainability.
 3. Verify that the slugify helper matches the application’s slug generation logic or adjust the URL assertion strategy to avoid false negatives.
 
 ## Overall Assessment
