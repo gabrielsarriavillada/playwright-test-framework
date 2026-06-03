@@ -10,6 +10,7 @@ Production-style **Playwright + TypeScript** automation framework demonstrating:
 - Page Object Model + custom fixtures
 - CI/CD execution with GitHub Actions
 - AI-assisted failure analysis workflows
+- AI-assisted test review
 - Scalable and maintainable QA architecture
 
 ---
@@ -302,35 +303,178 @@ This project includes an AI-assisted workflow that transforms Playwright failure
 The workflow processes Playwright test failure output and generates structured bug reports containing:
 
 - Failure summary
-- Reproduction steps
-- Expected vs actual behavior
-- Error evidence
-- Possible root cause analysis
-- Severity assessment suggestions
+- Failure category
+- Failure input
+- Probable root cause
+- Suggested investigation
+- QA assessment
+- Confidence
 
 The goal is to explore practical applications of AI for QA workflows, focusing on faster failure triage and improved debugging efficiency.
 
 The generated reports are intended to assist QA engineers during failure triage and debugging, not replace manual investigation.
 
+### Usage
+
+```bash
+npm run ai:bug-report
+```
+
+### Workflow
+
+Playwright JSON Report
+→ Deterministic Failure Analysis
+→ AI Root Cause Analysis
+→ Markdown Bug Report
+
+### Implementation notes
+
+Some fields are obtained in a deterministic way, directly based on the report produced by the test execution: Summary, Failure category and Failure input.
+AI assistance is used to generate the remaining sections: Probable root cause, Suggested investigation, QA assessment and Confidence.
+
 ### Example AI-Assisted Bug Report
 
 ```md
-Severity: Medium
+# AI-Assisted Bug Report
 
-Summary:
-Article creation fails after publishing through the UI.
+## Summary
+The test "@smoke Verify text present inside field matches expected value" failed because an input field value did not match the expected value.
 
-Possible Root Cause:
-Authentication token is not being attached to the article creation request.
+## Failure Category
+Assertion mismatch
 
-Evidence:
-POST /api/articles → 401 Unauthorized
+## Failure Input
 
-Suggested Investigation:
-Verify token persistence after login and inspect request headers during article publication.
+Suite: qa-playground/input-fields-validation.spec.ts
+
+Test: @smoke Verify text present inside field matches expected value
+
+Affected Projects:
+- qa-playground-chromium
+
+Error:
+Error: expect(locator).toHaveValue(expected) failed
+Locator:  getByTestId('input-verify-text')
+Expected: "QA PlayGround test"
+Received: "QA PlayGround"
+Timeout:  5000ms
+Call log:
+...
+Stack:
+Error: expect(locator).toHaveValue(expected) failed
+Locator:  getByTestId('input-verify-text')
+Expected: "QA PlayGround test"
+Received: "QA PlayGround"
+Timeout:  5000ms
+Call log:
+...
+
+
+## AI Analysis
+### Probable Root Cause
+The test expects the input field to contain the value "QA PlayGround test," but the actual value is "QA PlayGround." This indicates either the input was never updated with the full expected string or the test expectation is incorrect.
+
+### Suggested Investigation
+1. Verify the test steps prior to the assertion to confirm if the input field is being set or updated with the full expected value.
+2. Check if the application logic or UI allows the input field to hold the full string "QA PlayGround test" at the time of assertion.
+3. Review the test data or test script to ensure the expected value matches the intended input for this scenario.
+
+### QA Assessment
+Test issue — The discrepancy between expected and actual values suggests the test expectation or setup is incorrect rather than an application defect.
+
+### Confidence
+High, because the failure clearly shows a mismatch between expected and actual input value without other complicating factors.
+
+## Automation Notes
+This report was generated from Playwright failure output and enriched with AI-assisted analysis. It should be reviewed before being shared as a final bug report.
 ```
 
-![AI Bug Report Example](docs/images/ai-bug-report.png)
+---
+
+## AI-Assisted Test Review
+
+This project includes an AI-assisted workflow that reviews a given Playwright test file.
+
+The workflow processes Playwright test files and generates a review containing:
+
+- Strengths
+- Findings
+- Recommendations
+- Overall assessment
+
+The goal is to explore practical applications of AI for QA workflows, focusing on improving test quality, maintainability, and review efficiency.
+
+### Usage
+
+```bash
+npm run ai:test-review tests/conduit/integration/conduit-articles.spec.ts
+```
+
+### Workflow
+
+Playwright Test File
+→ AI Review Prompt
+→ AI Analysis
+→ Markdown Review Report
+
+### Example AI-Assisted Test Review
+
+```md
+# AI Test Review
+
+## Strengths
+
+- The tests use page objects and helper functions, which improves maintainability and readability.
+- The tests are clearly separated by functionality with descriptive test titles.
+- Serial execution is explicitly configured to handle known environment instability, improving reliability.
+- Assertions are meaningful and verify key outcomes (e.g., URL correctness, article presence, article data validation).
+- The use of API to create users and tokens reduces UI dependencies and speeds up test setup.
+
+## Findings
+
+### Finding 1
+
+Severity: Medium
+
+Explanation:  
+The test titles have awkward phrasing (e.g., "should a new article through UI be created by an API-created user") which reduces readability and clarity.
+
+Suggested Improvement:  
+Rewrite test titles to follow a consistent and clear pattern, for example:  
+- "should create a new article through the UI by an API-created user"  
+- "should display the article details page correctly for a new article"  
+- "should display a newly created article in the user profile page"
+
+### Finding 2
+
+Severity: Medium
+
+Explanation:  
+The tests repeat the same setup steps (login, article creation) in each test, which increases maintenance effort and test length.
+
+Suggested Improvement:  
+Consider extracting common setup steps into a `test.beforeEach` hook or a helper function within the test file to reduce duplication and improve maintainability.
+
+### Finding 3
+
+Severity: Low
+
+Explanation:  
+The URL assertion in the first test depends on `slugifyTitle(newArticle.title)` and the base URL from the test project config, which is good, but the slugify function is imported from a helper. If the slugify logic changes, the test might break or become inconsistent with the app.
+
+Suggested Improvement:  
+Ensure the slugify logic in the helper matches the application’s slug generation exactly, or consider verifying the URL by extracting the slug from the page after publishing rather than regenerating it in the test.
+
+## Recommendations
+
+1. Improve test titles for clarity and consistency to enhance readability and communication of test intent.  
+2. Extract repeated setup steps (login, article creation) into a shared setup hook or helper to reduce duplication and improve maintainability.  
+3. Verify that the slugify helper matches the application’s slug generation logic or adjust the URL assertion strategy to avoid false negatives.
+
+## Overall Assessment
+
+The test suite is well-structured, uses good abstraction with page objects and helpers, and addresses environment constraints explicitly. The most important improvement is to clarify and standardize test titles to improve readability and maintain a professional test suite that clearly communicates its purpose.
+```
 
 ---
 
@@ -375,7 +519,7 @@ Example environment configuration is also available in:
 - Playwright API testing (`request`)
 - Multi-project Playwright configuration
 - GitHub Actions
-- AI-assisted bug report generation
+- AI-assisted failure analysis and test review
 - ESLint
 - Prettier
 - dotenv
